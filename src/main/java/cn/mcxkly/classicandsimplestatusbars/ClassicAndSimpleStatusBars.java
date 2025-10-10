@@ -39,6 +39,7 @@ public class ClassicAndSimpleStatusBars {
     public static boolean mekanism = false;
     public static boolean cataclysm = false;
     public static boolean blueSkies = false;
+    public static boolean battery_shield = false;
     public ClassicAndSimpleStatusBars() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this :: commonSetup);

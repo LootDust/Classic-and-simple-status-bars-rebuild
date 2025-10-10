@@ -206,7 +206,8 @@ dependencies {
     implementation fg.deobf("curse.maven:lendercataclysm-551586:5474791") // L_Enders_Cataclysm-1.99.6-1.20.1.jar
     implementation fg.deobf("curse.maven:lionfish-api-1001614:5363774") // lionfishapi-1.9.jar
 
-
+    // 电池护盾
+    implementation fg.deobf("curse.maven:battery_shield-997220:6926507")
 }
 /**/
 mixin {

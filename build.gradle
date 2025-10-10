@@ -184,15 +184,16 @@ dependencies {
     implementation fg.deobf("curse.maven:mekanism-268560:5395221")
 
     // 起源 origins-forge
+    // 取消起源的支持因为我不知道它的apoli和calio仓库跑哪去了
 //    jarJar('io.github.edwinmindcraft:apoli-forge:1.20.1-2.9.0.1') {
 //        jarJar.ranged(it, '[1.20.1-2.9.0,)')
 //    }
 //    jarJar('io.github.edwinmindcraft:calio-forge:1.20.1-1.11.0.0') {
 //        jarJar.ranged(it, '[1.20.1-1.11.0,)')
 //    }
-    implementation fg.deobf('io.github.edwinmindcraft:apoli-forge:1.20.1-2.9.0.1')
-    implementation fg.deobf('io.github.edwinmindcraft:calio-forge:1.20.1-1.11.0.0')
-    implementation fg.deobf("io.github.edwinmindcraft:origins-forge:1.20.1-1.10.0.1")
+    //implementation fg.deobf('io.github.edwinmindcraft:apoli-forge:1.20.1-2.9.0.1')
+    //implementation fg.deobf('io.github.edwinmindcraft:calio-forge:1.20.1-1.11.0.0')
+    //implementation fg.deobf("io.github.edwinmindcraft:origins-forge:1.20.1-1.10.0.1")
 
     // 过饱和，超级饱食度
     implementation fg.deobf("curse.maven:super-saturation-431906:4998350")

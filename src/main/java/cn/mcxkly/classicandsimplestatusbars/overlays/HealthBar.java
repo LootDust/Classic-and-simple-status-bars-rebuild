@@ -174,6 +174,14 @@ public class HealthBar implements IGuiOverlay {
                     9, 9,
                     256, 256); // 红心图标
         }
+        float BatteryShield = 0;
+        float MaxBatteryShield = 0;
+        ShieldType BatteryShieldType = ShieldType.RAW;
+        if (ClassicAndSimpleStatusBars.battery_shield) {
+            BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
+            MaxBatteryShield = ((ILivingEntityA)player).battery_shield$getMaxShield();
+            BatteryShieldType = ((ILivingEntityA)player).battery_shield$getShieldType();
+        }
 
         float MaxHealth = player.getMaxHealth(); // 最大血量
         float Health = Math.min(player.getHealth(), MaxHealth); // 当前血量
@@ -199,6 +207,32 @@ public class HealthBar implements IGuiOverlay {
             xx = xx + font.width(text);
             text = helper.KeepOneDecimal(MaxHealth);
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health_Tail, false);
+
+            // 电池护盾
+            if ( BatteryShieldType != ShieldType.RAW) {
+                int ShieldColor = switch (BatteryShieldType) {
+                    case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
+                    case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
+                    case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
+                    case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                    default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
+                };
+                xx = xx + font.width(text);
+                text = Config.Interval_TTT;
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text);
+                text = helper.KeepOneDecimal(BatteryShield);
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text); // '/'
+                text = Config.Interval_lll;
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text);
+                text = helper.KeepOneDecimal(MaxBatteryShield);
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+            }
         } else {
             text = helper.KeepOneDecimal(Health);
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health, false);
@@ -210,6 +244,31 @@ public class HealthBar implements IGuiOverlay {
             xx = xx + font.width(text);
             text = helper.KeepOneDecimal(MaxHealth);
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health_Tail, false);
+
+            if ( BatteryShieldType != ShieldType.RAW) {
+                int ShieldColor = switch (BatteryShieldType) {
+                    case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
+                    case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
+                    case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
+                    case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                    default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
+                };
+                xx = xx + font.width(text);
+                text = Config.Interval_TTT;
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text);
+                text = helper.KeepOneDecimal(BatteryShield);
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text); // '/'
+                text = Config.Interval_lll;
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+
+                xx = xx + font.width(text);
+                text = helper.KeepOneDecimal(MaxBatteryShield);
+                guiGraphics.drawString(font, text, xx, y - 9, ShieldColor, false);
+            }
         }
 
         if ( ARMOR > 0 && Config.Armour_On ) {

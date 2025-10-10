@@ -138,6 +138,13 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
                     "\nSymbol value text color." +
                     "\n默认值(Default)：\"#DC6788\"")
             .define("Color_Artifacts_Symbol", "#DC6788");
+    private static final ForgeConfigSpec.BooleanValue Battery_Shield_On1 = BUILDER
+            .pop(1)
+            .push("BatteryShield")
+            .comment("如果设置为false,将使用电池护盾模组原版护盾值与生命值HUD" +
+                    "\nIf set to false, the display of the Battery Shield Mod's original shield value HUD will be turned on." +
+                    "\n默认值(Default)：true")
+            .define("BatteryShield-functional-status", true);
     /*************************************/
     private static final ForgeConfigSpec.BooleanValue Food_On1 = BUILDER
             .pop(2)
@@ -248,7 +255,7 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
             .define("Color_Food_ExhaustionLevel", "#66C3CC");
     static final ForgeConfigSpec SPEC = BUILDER.build();
     public static String Interval_lll, Interval_TTT, Prefix_Health, Prefix_Food;
-    public static boolean /*feathers_On,supersaturation_On,*/ Food_ExhaustionLevel_On, Thirst_On, Artifacts_On, Origins_On, All_On, Bloodsucker_On, Food_On, Health_On, EasyMode_Text_On, Armour_On, Armor_Toughness_On, Air_On, Mounts_On;
+    public static boolean /*feathers_On,supersaturation_On,*/ Food_ExhaustionLevel_On, Thirst_On, Artifacts_On, Origins_On, All_On, Bloodsucker_On, Food_On, Health_On, EasyMode_Text_On, Armour_On, Armor_Toughness_On, Air_On, Mounts_On, Battery_Shield_On;
     public static int Color_Food_ExhaustionLevel, MaxFood_On, Color_Origins_Symbol, Color_Thirst_Quenched, Color_Thirst, Color_Artifacts, Color_Air, Color_Artifacts_Symbol, Color_Air_Symbol, Color_Vampires_Blood, Color_Vampires_MaxBlood, Color_Origins, Color_Health, Color_Health_Absorb, Color_Health_Tail, Color_Food, Color_Food_Saturation, Color_Food_Tail, Color_Armor, Color_Armor_Toughness, Color_Interval_lll, Color_Interval_TTT;
 
     @SubscribeEvent
@@ -272,6 +279,7 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
         Artifacts_On = Artifact_On1.get();
         Thirst_On = Thirst_On1.get();
         Food_ExhaustionLevel_On = Food_ExhaustionLevel_On1.get();
+        Battery_Shield_On = Battery_Shield_On1.get();
 /*      supersaturation_On =  supersaturation_On1.get();
         feathers_On = feathers_On1.get();*/
 

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class BatteryShieldMixin {
     @Inject(method = "render", at = @At("HEAD"), cancellable = true)
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int width, int height, CallbackInfo ci) {
-        if ( Config.All_On ) {
+        if ( Config.All_On || Config.Battery_Shield_On ) {
             ci.cancel();
         }
     }

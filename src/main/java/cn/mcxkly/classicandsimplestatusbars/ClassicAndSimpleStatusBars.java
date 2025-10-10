@@ -33,7 +33,6 @@ public class ClassicAndSimpleStatusBars {
     public static final String MOD_ID = "classicandsimplestatusbars";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static boolean vampirism = false;
-    public static boolean origins = false;
     public static boolean supersaturation = false;
     public static boolean parcool = false;
     public static boolean feathers = false;

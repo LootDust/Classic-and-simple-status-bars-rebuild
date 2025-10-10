@@ -2,6 +2,7 @@ package cn.mcxkly.classicandsimplestatusbars;
 
 import arcaios26.supersaturation.SuperSaturation;
 import artifacts.Artifacts;
+import cc.xypp.battery_shield.BatteryShield;
 import cn.mcxkly.classicandsimplestatusbars.overlays.AppleSkinEventHandler;
 import cn.mcxkly.classicandsimplestatusbars.overlays.FoodLevel;
 import cn.mcxkly.classicandsimplestatusbars.overlays.ThirstWasTakenUse;

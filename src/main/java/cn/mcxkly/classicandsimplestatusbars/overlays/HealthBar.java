@@ -88,6 +88,7 @@ public class HealthBar implements IGuiOverlay {
         ShieldType BatteryShieldType = ShieldType.RAW;
         if (ClassicAndSimpleStatusBars.battery_shield) {
             BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
+            MaxBatteryShield = ((ILivingEntityA)player).battery_shield$getMaxShield();
             BatteryShieldType = ((ILivingEntityA)player).battery_shield$getShieldType();
         }
         int xx = x - 2;
@@ -97,6 +98,7 @@ public class HealthBar implements IGuiOverlay {
         text = Config.Interval_lll;
         xx = xx - font.width(text); // '/'
         guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Interval_lll, false);
+
         if ( Absorption > 0 ) {
             text = helper.KeepOneDecimal(Absorption);
             xx = xx - font.width(text);
@@ -106,9 +108,13 @@ public class HealthBar implements IGuiOverlay {
             xx = xx - font.width(text); // '+'
             guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Interval_TTT, false);
         }
+
+        text = helper.KeepOneDecimal(Health);
+        xx = xx - font.width(text);
+        guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Health_Tail, false);
+
+        // 电池护盾
         if ( BatteryShieldType != ShieldType.RAW) {
-            text = helper.KeepOneDecimal(BatteryShield);
-            xx = xx - font.width(text);
             int ShieldColor = switch (BatteryShieldType) {
                 case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
                 case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
@@ -116,15 +122,23 @@ public class HealthBar implements IGuiOverlay {
                 case SHIELD_RED -> Color.decode("#de0000").getRGB();
                 default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
             };
+
+            String text = helper.KeepOneDecimal(MaxBatteryShield);
+            xx = xx - font.width(text);
+            guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
+
+            text = Config.Interval_lll;
+            xx = xx - font.width(text); // '/'
+            guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
+
+            text = helper.KeepOneDecimal(BatteryShield);
+            xx = xx - font.width(text);
             guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
 
             text = Config.Interval_TTT;
             xx = xx - font.width(text);
-            guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Interval_TTT, false);
+            guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
         }
-        text = helper.KeepOneDecimal(Health);
-        xx = xx - font.width(text);
-        guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Health_Tail, false);
     }
 
     public void updateBarTextures(Player player) {
@@ -196,6 +210,7 @@ public class HealthBar implements IGuiOverlay {
             text = helper.KeepOneDecimal(MaxHealth);
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health_Tail, false);
         }
+
         if ( ARMOR > 0 && Config.Armour_On ) {
             guiGraphics.drawString(font, helper.KeepOneDecimal(ARMOR), x + 10, y - 19, Config.Color_Armor, false);
             // 重量

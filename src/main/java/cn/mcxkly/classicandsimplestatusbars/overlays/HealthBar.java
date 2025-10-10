@@ -85,6 +85,7 @@ public class HealthBar implements IGuiOverlay {
         float Health = Math.min(player.getHealth(), MaxHealth); // 当前血量
         float Absorption = player.getAbsorptionAmount(); // 吸收量
         float BatteryShield = 0;
+        float MaxBatteryShield = 0;
         ShieldType BatteryShieldType = ShieldType.RAW;
         if (ClassicAndSimpleStatusBars.battery_shield) {
             BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
@@ -123,7 +124,7 @@ public class HealthBar implements IGuiOverlay {
                 default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
             };
 
-            String text = helper.KeepOneDecimal(MaxBatteryShield);
+            text = helper.KeepOneDecimal(MaxBatteryShield);
             xx = xx - font.width(text);
             guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
 

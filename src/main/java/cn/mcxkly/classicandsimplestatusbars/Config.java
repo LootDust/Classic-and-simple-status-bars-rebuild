@@ -121,23 +121,6 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
                     "\nThirst Quenched value text color." +
                     "\n默认值(Default)：\"#82DAFD\"")
             .define("Color_Thirst_Quenched", "#82DAFD");
-    private static final ForgeConfigSpec.BooleanValue Origins_On1 = BUILDER
-            .pop(1)
-            .push("Origins")
-            .comment("如果设置为false,将关闭起源能力槽的显示。" +
-                    "\nIf set to false, the display of Origins Power values will be turned off." +
-                    "\n默认值(Default)：true")
-            .define("Origins-functional-status", true);
-    private static final ForgeConfigSpec.ConfigValue<String> Color_Origins1 = BUILDER
-            .comment("\n" + "起源能力文本颜色。" +
-                    "\nOrigins Power value text color." +
-                    "\n默认值(Default)：\"#EBE994\"")
-            .define("Color_Origins", "#EBE994");
-    private static final ForgeConfigSpec.ConfigValue<String> Color_Origins_Symbol1 = BUILDER
-            .comment("\n" + "符号'%'文本颜色。" +
-                    "\nSymbol value text color." +
-                    "\n默认值(Default)：\"#D2DAA4\"")
-            .define("Color_Origins_Symbol", "#D2DAA4");
     private static final ForgeConfigSpec.BooleanValue Artifact_On1 = BUILDER
             .pop(1)
             .push("Artifacts")
@@ -286,13 +269,12 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
         Armor_Toughness_On = Armor_Toughness_On1.get();
         Air_On = Air_On1.get();
         Mounts_On = Mounts_On1.get();
-        Origins_On = Origins_On1.get();
         Artifacts_On = Artifact_On1.get();
         Thirst_On = Thirst_On1.get();
         Food_ExhaustionLevel_On = Food_ExhaustionLevel_On1.get();
 /*      supersaturation_On =  supersaturation_On1.get();
         feathers_On = feathers_On1.get();*/
-        
+
         Color color_Food_ExhaustionLevel = Color.decode(Color_Food_ExhaustionLevel1.get().toLowerCase());
         Color_Food_ExhaustionLevel = color_Food_ExhaustionLevel.getRGB();
         Color_Artifacts = Integer.parseInt(Color_Artifacts1.get().substring(1), 16);
@@ -313,7 +295,5 @@ private static final ForgeConfigSpec.ConfigValue<String> Prefix_Food1 = BUILDER
         Color_Armor_Toughness = Integer.parseInt(Color_Armor_Toughness1.get().substring(1), 16);
         Color_Interval_lll = Integer.parseInt(Color_Interval_String_1_.get().substring(1), 16);
         Color_Interval_TTT = Integer.parseInt(Color_Interval_String_2_.get().substring(1), 16);
-        Color_Origins = Integer.parseInt(Color_Origins1.get().substring(1), 16);
-        Color_Origins_Symbol = Integer.parseInt(Color_Origins_Symbol1.get().substring(1), 16);
     }
 }

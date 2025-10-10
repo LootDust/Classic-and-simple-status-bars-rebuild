@@ -1,5 +1,7 @@
 package cn.mcxkly.classicandsimplestatusbars.overlays;
 
+import cc.xypp.battery_shield.api.ILivingEntityA;
+import cc.xypp.battery_shield.data.ShieldType;
 import cn.mcxkly.classicandsimplestatusbars.ClassicAndSimpleStatusBars;
 import cn.mcxkly.classicandsimplestatusbars.Config;
 import cn.mcxkly.classicandsimplestatusbars.other.helper;
@@ -12,19 +14,14 @@ import com.github.L_Ender.cataclysm.init.ModCapabilities;
 import com.legacy.blue_skies.BlueSkies;
 import com.legacy.blue_skies.capability.SkiesPlayer;
 import com.legacy.blue_skies.capability.util.ISkiesPlayer;
-import io.github.apace100.apoli.util.HudRender;
-import io.github.edwinmindcraft.apoli.api.component.IPowerContainer;
-import io.github.edwinmindcraft.apoli.api.power.configuration.ConfiguredPower;
 import mekanism.api.energy.IEnergyContainer;
 import mekanism.api.math.FloatingLong;
 import mekanism.common.Mekanism;
 import mekanism.common.item.gear.ItemMekaSuitArmor;
-import mekanism.common.util.MekanismUtils;
 import mekanism.common.util.StorageUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.player.Player;
@@ -32,8 +29,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-import java.util.Comparator;
-import java.util.List;
+import java.awt.*;
 import java.util.Objects;
 
 public class HealthBar implements IGuiOverlay {
@@ -46,6 +42,13 @@ public class HealthBar implements IGuiOverlay {
     private static final ResourceLocation intermediateHealthBarLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/intermediate.png");
     private static final ResourceLocation emptyHealthBarLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/empty.png");
     private static final ResourceLocation absorptionBarLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/absorption.png");
+
+    private static final ResourceLocation emptyBatteryShieldBlockLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/shield_empty.png");
+    private static final ResourceLocation BatteryShieldWhiteBlockLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/shield_white.png");
+    private static final ResourceLocation BatteryShieldBlueBlockLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/shield_blue.png");
+    private static final ResourceLocation BatteryShieldPurpleBlockLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/shield_purple.png");
+    private static final ResourceLocation BatteryShieldRedBlockLocation = new ResourceLocation(ClassicAndSimpleStatusBars.MOD_ID, "textures/gui/healthbars/shield_red.png");
+
     private static final ResourceLocation guiIconsLocation = new ResourceLocation( "textures/gui/icons.png");
 
     private static final ResourceLocation feathers = new ResourceLocation(Feathers.MODID, "textures/gui/icons.png");
@@ -81,6 +84,12 @@ public class HealthBar implements IGuiOverlay {
         float MaxHealth = player.getMaxHealth(); // 最大血量
         float Health = Math.min(player.getHealth(), MaxHealth); // 当前血量
         float Absorption = player.getAbsorptionAmount(); // 吸收量
+        float BatteryShield = 0;
+        ShieldType BatteryShieldType = ShieldType.RAW;
+        if (ClassicAndSimpleStatusBars.battery_shield) {
+            BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
+            BatteryShieldType = ((ILivingEntityA)player).battery_shield$getShieldType();
+        }
         int xx = x - 2;
         String text = helper.KeepOneDecimal(MaxHealth);
         xx = xx - font.width(text); // 要向左
@@ -95,6 +104,22 @@ public class HealthBar implements IGuiOverlay {
 
             text = Config.Interval_TTT;
             xx = xx - font.width(text); // '+'
+            guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Interval_TTT, false);
+        }
+        if ( BatteryShieldType != ShieldType.RAW) {
+            text = helper.KeepOneDecimal(BatteryShield);
+            xx = xx - font.width(text);
+            int ShieldColor = switch (BatteryShieldType) {
+                case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
+                case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
+                case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
+                case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
+            };
+            guiGraphics.drawString(font, text, xx, y - 1, ShieldColor, false);
+
+            text = Config.Interval_TTT;
+            xx = xx - font.width(text);
             guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Interval_TTT, false);
         }
         text = helper.KeepOneDecimal(Health);
@@ -254,40 +279,6 @@ public class HealthBar implements IGuiOverlay {
                     }
                 }
             }
-        }
-
-        if ( ClassicAndSimpleStatusBars.origins ) {
-            int finalX1 = finalX;
-            int finalY1 = finalY;
-            IPowerContainer.get(player).ifPresent((component) -> {
-                int iconSize = 8;
-                List<? extends ConfiguredPower<?, ?>> configuredPowers = component.getPowers().stream().map(Holder :: value).filter((power) -> power.asHudRendered().isPresent()).sorted(Comparator.comparing((power) -> power.getRenderSettings(player).orElse(HudRender.DONT_RENDER).spriteLocation())).toList();
-                for (ConfiguredPower<?, ?> hudPower : configuredPowers) {
-                    HudRender render = hudPower.getRenderSettings(player).orElse(HudRender.DONT_RENDER);
-                    if ( render.shouldRender(player) && hudPower.shouldRender(player).orElse(false) ) {
-                        ResourceLocation currentLocation = render.spriteLocation();
-                        int v = 8 + render.barIndex() * 10;
-                        float fill = hudPower.getFill(player).orElse(0.0F);
-                        if ( render.isInverted() ) {
-                            fill = 1.0F - fill;
-                        }
-                        String tex = helper.KeepOneDecimal((int) (fill * (float) 100));
-                        /*
-                        int finalY2 = finalY;
-                        if ( Absorption > 0 ) {
-                            // 避免血量文本太长. 在拥有吸收值时，提高高度.
-                            finalY2 -= 10;
-                        } */
-                        guiGraphics.drawString(font, "%", finalX1 - font.width("%"), finalY1, Config.Color_Origins_Symbol, false);
-                        guiGraphics.drawString(font, tex, finalX1 - font.width(tex) - font.width("%"), finalY1, Config.Color_Origins, false);
-                        // 渲染图标
-                        guiGraphics.blit(currentLocation,
-                                finalX1, finalY1,
-                                73, v,
-                                iconSize, iconSize);
-                    }
-                }
-            });
         }
     }
 

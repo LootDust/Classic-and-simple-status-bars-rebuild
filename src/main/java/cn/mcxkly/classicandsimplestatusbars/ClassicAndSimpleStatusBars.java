@@ -13,7 +13,6 @@ import com.mojang.logging.LogUtils;
 import de.teamlapen.vampirism.REFERENCE;
 import dev.ghen.thirst.Thirst;
 import homeostatic.Homeostatic;
-import io.github.apace100.origins.Origins;
 import mekanism.common.Mekanism;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -77,10 +76,6 @@ public class ClassicAndSimpleStatusBars {
             if ( Config.Bloodsucker_On && ModList.get().isLoaded(REFERENCE.MODID) ) {
                 LOGGER.info("CSSB: " + "Enable the vampirism blood value");
                 vampirism = true;
-            }
-            if ( Config.Origins_On && ModList.get().isLoaded(Origins.MODID) ) {
-                LOGGER.info("CSSB: " + "Enable the origins power value");
-                origins = true;
             }
             if ( ModList.get().isLoaded(SuperSaturation.MODID) ) {
                 LOGGER.info("CSSB: " + "Enable the SuperSaturation Added Value");

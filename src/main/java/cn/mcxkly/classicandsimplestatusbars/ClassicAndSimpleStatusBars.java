@@ -102,6 +102,10 @@ public class ClassicAndSimpleStatusBars {
                 LOGGER.info("CSSB: " + "Enable the BlueSkies ExtraHealth Value");
                 blueSkies = true;
             }
+            if ( ModList.get().isLoaded(BatteryShield.MODID) ) {
+                LOGGER.info("CSSB: " + "Enable the BatteryShield HealthShield Value");
+                battery_shield = true;
+            }
         }
     }
 }

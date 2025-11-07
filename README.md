@@ -11,7 +11,7 @@
 - 支持Forge加载器，支持1.20-1.20.1版本。
 - 计划支持未来更新的版本（如果原作者明确不再更新的话）。
 
-#### 相关链接
+### 相关链接
 - [MC百科](https://www.mcmod.cn/class/22526.html)
 - [CurseForge](https://curseforge.com/minecraft/mc-mods/classic-and-simple-status-bars-rebuild)
 

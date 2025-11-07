@@ -86,11 +86,17 @@ public class HealthBar implements IGuiOverlay {
         float Absorption = player.getAbsorptionAmount(); // 吸收量
         float BatteryShield = 0;
         float MaxBatteryShield = 0;
-        ShieldType BatteryShieldType = ShieldType.RAW;
+        int BatteryShieldType = 0;
         if (ClassicAndSimpleStatusBars.battery_shield) {
             BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
             MaxBatteryShield = ((ILivingEntityA)player).battery_shield$getMaxShield();
-            BatteryShieldType = ((ILivingEntityA)player).battery_shield$getShieldType();
+            BatteryShieldType = switch (((ILivingEntityA)player).battery_shield$getShieldType()) {
+                case RAW -> 0;
+                case SHIELD_WHITE -> 1;
+                case SHIELD_BLUE -> 2;
+                case SHIELD_PERP -> 3;
+                case SHIELD_RED -> 4;
+            };
         }
         int xx = x - 2;
         String text = helper.KeepOneDecimal(MaxHealth);
@@ -115,12 +121,12 @@ public class HealthBar implements IGuiOverlay {
         guiGraphics.drawString(font, text, xx, y - 1, Config.Color_Health_Tail, false);
 
         // 电池护盾
-        if ( BatteryShieldType != ShieldType.RAW) {
+        if ( BatteryShieldType != 0) {
             int ShieldColor = switch (BatteryShieldType) {
-                case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
-                case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
-                case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
-                case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                case 1 -> Color.decode("#bfbfbf").getRGB();
+                case 2 -> Color.decode("#24a5ff").getRGB();
+                case 3 -> Color.decode("#b934ff").getRGB();
+                case 4 -> Color.decode("#de0000").getRGB();
                 default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
             };
 
@@ -176,12 +182,19 @@ public class HealthBar implements IGuiOverlay {
         }
         float BatteryShield = 0;
         float MaxBatteryShield = 0;
-        ShieldType BatteryShieldType = ShieldType.RAW;
+        int BatteryShieldType = 0;
         if (ClassicAndSimpleStatusBars.battery_shield) {
             BatteryShield = ((ILivingEntityA)player).battery_shield$getShield();
             MaxBatteryShield = ((ILivingEntityA)player).battery_shield$getMaxShield();
-            BatteryShieldType = ((ILivingEntityA)player).battery_shield$getShieldType();
+            BatteryShieldType = switch (((ILivingEntityA)player).battery_shield$getShieldType()) {
+                case RAW -> 0;
+                case SHIELD_WHITE -> 1;
+                case SHIELD_BLUE -> 2;
+                case SHIELD_PERP -> 3;
+                case SHIELD_RED -> 4;
+            };
         }
+
 
         float MaxHealth = player.getMaxHealth(); // 最大血量
         float Health = Math.min(player.getHealth(), MaxHealth); // 当前血量
@@ -209,12 +222,12 @@ public class HealthBar implements IGuiOverlay {
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health_Tail, false);
 
             // 电池护盾
-            if ( BatteryShieldType != ShieldType.RAW) {
+            if (BatteryShieldType != 0) {
                 int ShieldColor = switch (BatteryShieldType) {
-                    case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
-                    case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
-                    case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
-                    case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                    case 1 -> Color.decode("#bfbfbf").getRGB();
+                    case 2 -> Color.decode("#24a5ff").getRGB();
+                    case 3 -> Color.decode("#b934ff").getRGB();
+                    case 4 -> Color.decode("#de0000").getRGB();
                     default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
                 };
                 xx = xx + font.width(text);
@@ -245,12 +258,12 @@ public class HealthBar implements IGuiOverlay {
             text = helper.KeepOneDecimal(MaxHealth);
             guiGraphics.drawString(font, text, xx, y - 9, Config.Color_Health_Tail, false);
 
-            if ( BatteryShieldType != ShieldType.RAW) {
+            if ( BatteryShieldType != 0) {
                 int ShieldColor = switch (BatteryShieldType) {
-                    case SHIELD_WHITE -> Color.decode("#bfbfbf").getRGB();
-                    case SHIELD_BLUE -> Color.decode("#24a5ff").getRGB();
-                    case SHIELD_PERP -> Color.decode("#b934ff").getRGB();
-                    case SHIELD_RED -> Color.decode("#de0000").getRGB();
+                    case 1 -> Color.decode("#bfbfbf").getRGB();
+                    case 2 -> Color.decode("#24a5ff").getRGB();
+                    case 3 -> Color.decode("#b934ff").getRGB();
+                    case 4 -> Color.decode("#de0000").getRGB();
                     default -> throw new IllegalStateException("Unexpected value: " + BatteryShieldType);
                 };
                 xx = xx + font.width(text);
@@ -331,7 +344,8 @@ public class HealthBar implements IGuiOverlay {
         }
         int finalY = Y - 8;
         int finalX = x + 72; // 这是起源用的
-        if ( ClassicAndSimpleStatusBars.cataclysm ) {
+        // 沙暴瓶不再
+        /*if ( ClassicAndSimpleStatusBars.cataclysm ) {
             int offsetY = 0;
             if ( onmek ) {
                 finalY -= 10;
@@ -354,7 +368,7 @@ public class HealthBar implements IGuiOverlay {
                     }
                 }
             }
-        }
+        }*/
     }
 
     private void renderHealthBar(GuiGraphics guiGraphics, float partialTick, int x, int y, Player player) {
